@@ -24,7 +24,6 @@ template <typename T>
 using Vec=std::vector<T>;
 using namespace std;
 using namespace std::placeholders;
-#define vi vector<int>
 #define pii pair<int, int>
 #define pb push_back
 #define mp make_pair
@@ -221,7 +220,190 @@ std::array<T, N> operator-(const std::array<T, N>& arr) {
     }
     return result;
 }
+template<typename T, size_t N>
+std::array<T, N>& operator+=(std::array<T, N>& arr1, const std::array<T, N>& arr2) {
+    for (size_t i = 0; i < N; ++i) {
+        arr1[i] += arr2[i];
+    }
+    return arr1;
+}
 
+template<typename T, size_t N>
+std::array<T, N>& operator-=(std::array<T, N>& arr1, const std::array<T, N>& arr2) {
+    for (size_t i = 0; i < N; ++i) {
+        arr1[i] -= arr2[i];
+    }
+    return arr1;
+}
+
+template<typename T, size_t N>
+std::array<T, N>& operator*=(std::array<T, N>& arr1, const std::array<T, N>& arr2) {
+    for (size_t i = 0; i < N; ++i) {
+        arr1[i] *= arr2[i];
+    }
+    return arr1;
+}
+
+template<typename T, size_t N>
+std::array<T, N>& operator/=(std::array<T, N>& arr1, const std::array<T, N>& arr2) {
+    for (size_t i = 0; i < N; ++i) {
+        if (arr2[i] == 0) {
+            throw std::runtime_error("Division by zero is not allowed.");
+        }
+        arr1[i] /= arr2[i];
+    }
+    return arr1;
+}
+template<typename T>
+std::vector<T> operator+(const std::vector<T>& vec1, const std::vector<T>& vec2) {
+    std::vector<T> result(vec1.size());
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        result[i] = vec1[i] + vec2[i];
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<T> operator-(const std::vector<T>& vec1, const std::vector<T>& vec2) {
+    std::vector<T> result(vec1.size());
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        result[i] = vec1[i] - vec2[i];
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<T> operator*(const std::vector<T>& vec1, const std::vector<T>& vec2) {
+    std::vector<T> result(vec1.size());
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        result[i] = vec1[i] * vec2[i];
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<T> operator/(const std::vector<T>& vec1, const std::vector<T>& vec2) {
+    std::vector<T> result(vec1.size());
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        if (vec2[i] == 0) {
+            throw std::runtime_error("Division by zero is not allowed.");
+        }
+        result[i] = vec1[i] / vec2[i];
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<T> operator-(const std::vector<T>& vec) {
+    std::vector<T> result(vec.size());
+    for (size_t i = 0; i < vec.size(); ++i) {
+        result[i] = -vec[i];
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<T>& operator+=(std::vector<T>& vec1, const std::vector<T>& vec2) {
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        vec1[i] += vec2[i];
+    }
+    return vec1;
+}
+
+template<typename T>
+std::vector<T>& operator-=(std::vector<T>& vec1, const std::vector<T>& vec2) {
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        vec1[i] -= vec2[i];
+    }
+    return vec1;
+}
+
+template<typename T>
+std::vector<T>& operator*=(std::vector<T>& vec1, const std::vector<T>& vec2) {
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        vec1[i] *= vec2[i];
+    }
+    return vec1;
+}
+
+template<typename T>
+std::vector<T>& operator/=(std::vector<T>& vec1, const std::vector<T>& vec2) {
+    for (size_t i = 0; i < vec1.size(); ++i) {
+        if (vec2[i] == 0) {
+            throw std::runtime_error("Division by zero is not allowed.");
+        }
+        vec1[i] /= vec2[i];
+    }
+    return vec1;
+}
+
+template<typename T>
+struct Matrix {
+    std::vector<std::vector<T>> data;
+
+    Matrix(std::vector<std::vector<T>> elements) : data(elements) {}
+
+    // Addition of two matrices
+    Matrix<T> operator+(const Matrix<T>& other) const {
+        std::vector<std::vector<T>> result(data.size(), std::vector<T>(data[0].size()));
+        for (size_t i = 0; i < data.size(); ++i) {
+            for (size_t j = 0; j < data[0].size(); ++j) {
+                result[i][j] = data[i][j] + other.data[i][j];
+            }
+        }
+        return Matrix<T>(result);
+    }
+
+    // Subtraction of two matrices
+    Matrix<T> operator-(const Matrix<T>& other) const {
+        std::vector<std::vector<T>> result(data.size(), std::vector<T>(data[0].size()));
+        for (size_t i = 0; i < data.size(); ++i) {
+            for (size_t j = 0; j < data[0].size(); ++j) {
+                result[i][j] = data[i][j] - other.data[i][j];
+            }
+        }
+        return Matrix<T>(result);
+    }
+
+    // Scalar multiplication of a matrix
+    Matrix<T> operator*(const T& scalar) const {
+        std::vector<std::vector<T>> result(data.size(), std::vector<T>(data[0].size()));
+        for (size_t i = 0; i < data.size(); ++i) {
+            for (size_t j = 0; j < data[0].size(); ++j) {
+                result[i][j] = data[i][j] * scalar;
+            }
+        }
+        return Matrix<T>(result);
+    }
+
+    // Matrix multiplication
+    Matrix<T> operator*(const Matrix<T>& other) const {
+        if (data[0].size() != other.data.size()) {
+            throw std::invalid_argument("Incompatible matrix dimensions");
+        }
+        std::vector<std::vector<T>> result(data.size(), std::vector<T>(other.data[0].size()));
+        for (size_t i = 0; i < data.size(); ++i) {
+            for (size_t j = 0; j < other.data[0].size(); ++j) {
+                T sum = 0;
+                for (size_t k = 0; k < data[0].size(); ++k) {
+                    sum += data[i][k] * other.data[k][j];
+                }
+                result[i][j] = sum;
+            }
+        }
+        return Matrix<T>(result);
+    }
+
+    // Display the matrix
+    void display() const {
+        for (const auto& row : data) {
+            for (const auto& elem : row) {
+                std::cout << elem << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+};
 // Define the memoization table
 
 // Function to perform memoization
