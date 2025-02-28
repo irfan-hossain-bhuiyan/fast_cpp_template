@@ -1,5 +1,3 @@
-
-
 // Never forget to use lambda gcd other than gcd to solve problem.
 // error=SegmentTree(a,gcd),
 // ok=SegmentTree(a,lambda::gcd);
@@ -410,6 +408,15 @@ public:
     vec.reserve(((last - first) + (step - 1)) / step);
     RANGEB(i, first, last, step) { vec.push_back(i); }
     return vec;
+  }
+  template<typename F>
+Vec<T> sliceDp(F f,T defaultValue=0){
+	auto x=Vec::with_capacity(this->size()+1);
+	x.push_back(defaultValue);
+	RANGE(i,0,this->size()){
+		x.push_back(f(x[i],this->at(i)));
+	}
+	return x;
   }
   Slice<It> slice() { return Slice<It>(this->begin(), this->end()); }
   Slice<It> firstSlice(i64 n) {
@@ -1133,6 +1140,53 @@ i64 modExp(i64 base, i64 exp, i64 mod = MOD) {
 
   return result;
 }
+
+enum class EdgeType:u8{
+	directional,
+	un_directional
+};
+
+class Graph {
+public:
+  Vec<Set<u32>> core;
+
+private:
+  Vec<u32> _path;
+  Vec<bool> _vertexState;
+public:
+  Graph(Vec<Set<u32>>&& core):core(core){}
+  Vec<u32> dfs(u32 start, u32 end) {
+    _path.clear();
+    _vertexState = Vec<bool>(core.size());
+    _path.push_back(start);
+    if (start == end) {
+      return std::move(_path);
+    }
+    _vertexState[start] = true;
+    for (auto &x : core[start]) {
+      if (_vertexState[x] == false) {
+	      auto ans =dfs(x,end);
+	      if(!ans.empty())return ans;
+      }
+    }
+    _path.pop_back();
+    return Vec<u32>();
+  }
+  static Graph fromInput(u32 n,u32 e,const EdgeType edgetype){
+	auto x=Vec<Set<u32>>(n);
+	RANGE(_,0,e){
+		auto [l,r]=n2Input<u32>();
+		if(edgetype==EdgeType::un_directional){
+			x[l].insert(r);
+			x[r].insert(l);
+		}
+		else{
+			x[l].insert(r);
+		}
+	}
+	return Graph(std::move(x));
+  }
+};
 void sol() {
   i64 n = fromInput<i64>();
   auto slice = Vi64::fromInput(n);
