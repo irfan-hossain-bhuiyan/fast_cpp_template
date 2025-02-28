@@ -1,4 +1,5 @@
 
+```cpp
 
 // Never forget to use lambda gcd other than gcd to solve problem.
 // error=SegmentTree(a,gcd),
@@ -1154,3 +1155,4 @@ int main() {
   i32 N = fromInput<i32>();
   RANGE(_, 0, N) { sol(); }
 }
+```
